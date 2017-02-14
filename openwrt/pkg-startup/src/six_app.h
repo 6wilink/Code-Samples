@@ -10,8 +10,8 @@
 #ifndef SIX_APP_H_
 #define SIX_APP_H_
 
-#include "_gws.h"
-#include "_def.h"
+#include "six_gws.h"
+#include "six_def.h"
 
 
 #define APP_DESC				("GWS Analog Baseband")
@@ -19,12 +19,8 @@
 
 
 // size define
-#define APP_NAME_LENGTH			16
-
-// ABB source is IWINFO
-#if (defined(_ABB_SRC) && (_ABB_SRC == IWINFO))
-#define ABB_IFNAME_LENGTH		16
-#endif
+#define APP_LIMIT_COMMON_LENGTH			32
+#define APP_LIMIT_IFNAME_LENGTH			16
 
 
 // user input struct
@@ -37,13 +33,12 @@ typedef struct {
 	} flag;
 	struct {
 		int pid;
-		char app[APP_NAME_LENGTH];
+		char app[APP_LIMIT_COMMON_LENGTH];
 		char key[GWS_APP_KEY_LENGTH];
 
-#if (defined(_ABB_SRC) && (_ABB_SRC == IWINFO))
 		int bw;
-		char ifname[ABB_IFNAME_LENGTH];
-#endif
+		char ifname[APP_LIMIT_IFNAME_LENGTH];
+
 		int idle;
 
 	} conf;

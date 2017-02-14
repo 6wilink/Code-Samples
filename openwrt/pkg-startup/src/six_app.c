@@ -22,7 +22,7 @@
 
 #include <signal.h>
 
-#include "six_env.h"
+#include "six_def.h"
 #include "six_app.h"
 #include "six_task.h"
 
@@ -49,6 +49,7 @@ int main(int argc, char **argv)
 
 
 #ifdef USE_GETOPT_LONG
+
 	DBG("read command line params (getopt_long())\n");
 
 	// todo: verify in gdbserver
@@ -115,7 +116,10 @@ int main(int argc, char **argv)
 	while((c = getopt(argc, argv, "Dvhdi:b:k:")) != -1) {
 		switch(c) {
 		case 'i':
-			snprintf(env.conf.ifname, ABB_IFNAME_LENGTH, "%s", optarg);
+			snprintf(env.conf.ifname, APP_LIMIT_IFNAME_LENGTH, "%s", optarg);
+			break;
+		case 'b':
+			env.conf.bw = atoi(optarg);
 			break;
 		case 'h':
 			env.flag.help = 1;
@@ -153,7 +157,7 @@ int main(int argc, char **argv)
 	}
 
 	env.conf.pid = getpid();
-	snprintf(env.conf.app, APP_NAME_LENGTH, "%s", app);
+	snprintf(env.conf.app, APP_LIMIT_COMMON_LENGTH, "%s", app);
 	if (env.flag.daemon) {
 		app_daemon();
 		env.conf.pid = getpid();
