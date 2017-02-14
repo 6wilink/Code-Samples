@@ -12,9 +12,9 @@ PKG_RELEASE:=1
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)_$(PKG_VERSION)-$(PKG_RELEASE)
 
 PKG_SOURCE:=$(PKG_NAME)_$(PKG_VERSION)-$(PKG_RELEASE).tar.gz
-PKG_SOURCE_URL:=http://10.10.1.151/pkg-src/ \
-	http://10.10.1.150/pkg-src/
-PKG_MD5SUM:=94e26353778bee05d56dd0e3b43160e7
+PKG_SOURCE_URL:=http://10.10.1.151/openwrt/package/tar-gz/ \
+	http://10.10.1.150/openwrt/package/tar-gz/
+PKG_MD5SUM:=c61921916810784af7755db5da322286
 
 #PKG_FIXUP:=libtool
 #PKG_INSTALL:=1
@@ -32,15 +32,6 @@ endef
 define Package/$(PKG_NAME)/description
   Analog Baseband Manager, share data via shm/files;
   Depends on libiwinfo.
-endef
-
-
-define Build/Prepare
-	mkdir -p $(PKG_BUILD_DIR)
-	$(CP) ./src/* $(PKG_BUILD_DIR)
-endef
-
-define Build/Configure
 endef
 
 define Package/$(PKG_NAME)/install
