@@ -54,23 +54,19 @@ int main(int argc, char **argv)
 
 	// todo: verify in gdbserver
 	for(;;) {
-		int option_index = 0, c = 0;
+		int option_index = 0;
+		int c = 0;
 		static struct option long_options[] = {
-				{ "h", 			no_argument, 0, 0 },
 				{ "help", 		no_argument, 0, 0 },
-				{ "v", 			no_argument, 0, 0 },
 				{ "version", 	no_argument, 0, 0 },
-				{ "d", 			no_argument, 0, 0 },
 				{ "debug", 		no_argument, 0, 0 },
-				{ "D", 			no_argument, 0, 0 },
 				{ "daemon", 	no_argument, 0, 0 },
-				{ "i", 			required_argument, 0, 0 },
 				{ "ifname", 	required_argument, 0, 0 },
+				{ "bw", 		required_argument, 0, 0 },
 				{ 0, 			no_argument, 0, 0 }
 		};
 
-		//c = getopt_long(argc, argv, "", long_options, &option_index);
-		c = getopt_long_only(argc, argv, "", long_options, &option_index);
+		c = getopt_long(argc, argv, "hvdDi:b:", long_options, &option_index);
 
 		// no more params
 		if (c == -1) break;
@@ -79,28 +75,33 @@ int main(int argc, char **argv)
 		if (c == '?') continue;
 
 		// handle param
-		switch(option_index) {
+		switch(c) {
 		case 0:
-		case 1:
+		case 'h':
 			env.flag.help = 1;
-			return 0;
+			break;
+		case 1:
+		case 'v':
+			env.flag.version = 1;
 			break;
 		case 2:
-		case 3:
-			env.flag.version = 1;
-			return 0;
-			break;
-		case 4:
-		case 5:
+		case 'd':
 			env.flag.debug = 1;
 			break;
-		case 6:
-		case 7:
+		case 3:
+		case 'D':
 			env.flag.daemon = 1;
 			break;
-		case 9:
-		case 10:
-			snprintf(env.conf.ifname, ABB_IFNAME_LENGTH, "%s", optarg);
+		case 4:
+			
+		case 'i':
+#if defined(_ABB_SRC_IWINFO)
+ 			snprintf(env.conf.ifname, APP_LIMIT_IFNAME_LENGTH, "%s", optarg);
+#endif
+ 			break;
+		case 5:
+		case 'b':
+			env.conf.bw = atoi(optarg);
 			break;
 		default: // running with default values
 			break;
@@ -113,14 +114,8 @@ int main(int argc, char **argv)
 
 	// verified by Qige @ 2017.01.31
 	int c = 0;
-	while((c = getopt(argc, argv, "Dvhdi:b:k:")) != -1) {
+	while((c = getopt(argc, argv, "vhdDi:b:")) != -1) {
 		switch(c) {
-		case 'i':
-			snprintf(env.conf.ifname, APP_LIMIT_IFNAME_LENGTH, "%s", optarg);
-			break;
-		case 'b':
-			env.conf.bw = atoi(optarg);
-			break;
 		case 'h':
 			env.flag.help = 1;
 			break;
@@ -133,6 +128,16 @@ int main(int argc, char **argv)
 		case 'D':
 			env.flag.daemon = 1;
 			break;
+
+#if defined(_ABB_SRC_IWINFO)
+		case 'i':
+			snprintf(env.conf.ifname, APP_LIMIT_IFNAME_LENGTH, "%s", optarg);
+			break;
+		case 'b':
+			env.conf.bw = atoi(optarg);
+			break;
+#endif
+
 		default:
 			break;
 		}
@@ -156,22 +161,24 @@ int main(int argc, char **argv)
 		app_version();
 	}
 
-	env.conf.pid = getpid();
-	snprintf(env.conf.app, APP_LIMIT_COMMON_LENGTH, "%s", app);
+	env.app.pid = getpid();
+	snprintf(env.app.name, APP_LIMIT_COMMON_LENGTH, "%s", app);
 	if (env.flag.daemon) {
 		app_daemon();
-		env.conf.pid = getpid();
-		LOG("running daemon (%s, pid=%d)\n", env.conf.app, env.conf.pid);
+		env.app.pid = getpid();
+		LOG("running daemon (%s, pid=%d)\n", env.app.name, env.app.pid);
+	} else {
+		DBG("started (%s, pid=%d)\n", env.app.name, env.app.pid);
 	}
 
-	LOG("started (%s, pid=%d)\n", env.conf.app, env.conf.pid);
+
+	// call Task, hook functions
 	ret = Task(&env);
 	return ret;
 }
 
-// todo: verify with gdbserver
-// detach terminal
-// run in backgrund
+// import from "mjpg-streamer"
+// detach terminal, run in backgrund
 static void app_daemon(void)
 {
 	int fr=0;
@@ -221,10 +228,11 @@ static void app_version(void)
 static void app_help(const char *app)
 {
 #ifdef USE_GETOPT_LONG
-	printf(" usage: %s [-D|--daemon] [-i|--ifname ifname]\n", app);
-	printf("        %s [-d|--debug] [-v|--version|--ver] [-h|--help]\n", app);
+	printf(" usage: %s [-D|--daemon] [-b|--bw chanbw] [-i|--ifname ifname]\n", app);
+	printf("        %s [-d|--debug] [-v|--version|--ver] [-h|--help]\n\n", app);
 #else
-	printf("  usage: %s [-D] [-i ifname]\n", app);
-	printf("         %s [-d] [-v] [-h]\n", app);
+	printf("  usage: %s [-D] [-b bandwidth] [-i ifname]\n", app);
+	printf("         %s [-d] [-v] [-h]\n\n", app);
 #endif
+	printf("     eg. %s -b8 -iwlan0 -D\n", app);
 }
