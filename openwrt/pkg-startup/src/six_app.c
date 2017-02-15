@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
 	DBG("read command line params (getopt_long())\n");
 
-	// todo: verify in gdbserver
+	// verified @ 2017.02.15
 	for(;;) {
 		int option_index = 0;
 		int c = 0;
@@ -93,15 +93,20 @@ int main(int argc, char **argv)
 			env.flag.daemon = 1;
 			break;
 		case 4:
-			
 		case 'i':
+
 #if defined(_ABB_SRC_IWINFO)
  			snprintf(env.conf.ifname, APP_LIMIT_IFNAME_LENGTH, "%s", optarg);
 #endif
+
  			break;
 		case 5:
 		case 'b':
+
+#if defined(_ABB_SRC_IWINFO)
 			env.conf.bw = atoi(optarg);
+#endif
+
 			break;
 		default: // running with default values
 			break;
@@ -170,7 +175,6 @@ int main(int argc, char **argv)
 	} else {
 		DBG("started (%s, pid=%d)\n", env.app.name, env.app.pid);
 	}
-
 
 	// call Task, hook functions
 	ret = Task(&env);
