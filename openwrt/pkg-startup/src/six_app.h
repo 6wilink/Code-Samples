@@ -31,17 +31,21 @@ typedef struct {
 		int debug;
 		int daemon;
 	} flag;
+
 	struct {
 		int pid;
-		char app[APP_LIMIT_COMMON_LENGTH];
+		char name[APP_LIMIT_COMMON_LENGTH];
 		char key[GWS_APP_KEY_LENGTH];
+		int idle;
+	} app;
 
+#if defined(_ABB_SRC_IWINFO)
+	struct {
 		int bw;
 		char ifname[APP_LIMIT_IFNAME_LENGTH];
-
-		int idle;
-
 	} conf;
+#endif
+
 } APP_ENV;
 
 #endif /* SIX_APP_H_ */

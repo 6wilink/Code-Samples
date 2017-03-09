@@ -1,0 +1,55 @@
+by Qige @ 2017.02.07
+
+Design
+------
+Things Matters
+- UI & UI Design;
+- Security & Ownership;
+- Hardware Monitor & Control;
+
+
+Application & Interfaces
+------------------------
+By last 8 months experience, I strongly suggest us use thes Combo:
+- C: 		Hardware Control, Libraries, Interfaces, Command line;
+- Shell: 	Pack app into service;
+- Lua: 		Data collector & Executor.
+
+
+UI & UI Design
+--------------
+Current, we have WebUI; 
+but what functions that we really want to put into this?
+- Analog Baseband (ABB);
+- Hardware Monitor;
+- Hardware Control;
+- Channel Scan Result;
+
+And UI Design:
+- use W3.css as CSS framework;
+- use jQuery as JS framework.
+
+
+Security & Ownership
+--------------------
+The boxes may be need to identified at these cases:
+- Right After Assembled: DEBUG MODE;
+- After shipping to clients: First-time use;
+- When installed on site: Monitor & Configure;
+- When calling customer service: Identify SN/Model;
+- When return from clients: Re-cycle.
+
+CASE I:
+We need an extension to let our R&D team to login without limitations;
+And this part can enable/disable with our own methods.
+
+CASE II:
+Normally, we should save/stick a PASSCODE, this code maybe based on WMAC or something like that;
+So when first-time use, if user has it in hand, he/she will be able to enter FAIL-SAFE.
+
+CASE III:
+As we discussed last week, we should devide this into "ABB & "RADIO" parts.
+And "SYSTEM", "NETWORK" parts as well.
+
+CASE IV: 
+We should use an Chart to display the scan results.
