@@ -1,0 +1,39 @@
+SOURCE CONTROL VIA MAKEFILE
+---------------------------
+by Qige @ 2017.03.10
+
+STEP 1. As a developer, you should submit 3 files every time:
+    - FILE-01: .tar.gz/.tar.bz2:     compressed src codes.
+    - FILE-02: Makefile:             assign URL to download your src file, and the right checksum;
+    - FILE-03: README.txt:           tell others what did you changed;
+
+STEP 2. Where can you get a sample files:
+    - start with git
+        "mkdir git; cd git; git clone https://github.com/zhaoqige/6w-snippets.git; cd 6w-snippets".
+    - "./openwrt/pkg-tar-gz/tar-gz/$(PKG_NAME)_$(PKG_VERSION)-$(PKG_RELEASE)/" is a sample of FILE-01 before compressed;
+    - "./openwrt/pkg-tar-gz/openwrt-package/Makefile", FILE-02;
+    - write "README.txt", FILE-03.
+
+STEP 3. How to start:
+    - download sample files (Follow STEP 2);
+    - organize your src code structure;
+    - compress your src code, get FILE-01;
+    - change these items in Makefile, get FILE-02:
+        - "PKG_NAME", "PKG_VERSION", "PKG_RELEASE";
+        - "PKG_SOURCE_URL", "PKG_MD5SUM".
+    - write "README.txt", FILE-03;
+    - upload these 3 files to right place;
+    - save these files to yourself own repository as backup.
+
+STEP 4. How to know if my src code updated?
+    - Update FILE-02 in your own cross-compile dir;
+    - exec "make package/*/compile V=s";
+    - exec "md5sum dl/*.ipk", see if checksum value is the same as your Makefile.
+
+NAMING RULES
+------------
+"gws-{abb|radio|agc|tpc}_{PKG_VERSION}-{PKG_RELEASE}_{PKG_MD5SUM}.tar.{gz|bz2}"
+
+DOCS REPOSITORY
+---------------
+https://github.com/zhaoqige/6w-snippets
