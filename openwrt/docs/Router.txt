@@ -1,0 +1,21 @@
+Key Steps to Enable Router Mode
+-------------------------------
+by Qige @ 2017.02.07
+
+1. Re-configure network
+	1.1 Cancel "bridge" in "/etc/config/network";
+	1.2 Make wireless connection in "/etc/config/wireless";
+
+2. Enable Firewall
+	Make sure you have done STEP1
+
+3. Enable dhcp service
+	/etc/init.d/dhcp restart
+
+
+Something IMPORTANT!
+--------------------
+
+1. Firewall must be enabled & running;
+2. There should be no GATEWAY in LAN;
+3. DNS/Nameserver should be addresses provided by your ISP.

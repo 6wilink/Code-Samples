@@ -1,5 +1,0 @@
-#!/usr/bin/lua
-
-require 'wui.App'
-App.Debug()
-

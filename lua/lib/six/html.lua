@@ -1,8 +1,9 @@
 -- html module
 -- by Qige
 -- 2016.04.05/2017.01.03
+-- 2017.03.13: add local, change "require 'six.html'" to "local html = require 'six.html'"
 
-html = {}
+local html = {}
 
 function html.head(text)
 	return "<head>\n"..text.."\n</head>\n"
