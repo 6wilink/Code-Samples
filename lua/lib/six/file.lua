@@ -1,9 +1,10 @@
 -- file read/write
 -- by Qige
 -- 2016.04.05/2017.01.03/2017.01.04/2017.01.06
+-- 2017.03.13: add local, change "require 'six.file'" to "local file = require 'six.file'"
 
 
-file = {}
+local file = {}
 
 function file.read(path)
 	local text = ''

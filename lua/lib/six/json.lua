@@ -1,11 +1,9 @@
 -- json encode/decode
 -- by Qige
 -- 2017.01.06
+-- 2017.03.13: add local, change "require 'six.json'" to "local json = require 'six.json'"
 
--- TODOs: 
--- BUG#1 - when encode a lua table with no key
-
-json = {}
+local json = {}
 
 function json.encode(_data)
   local _response = {}
