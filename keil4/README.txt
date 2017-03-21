@@ -12,7 +12,7 @@ c for Keil4
 
 GITHUB
 ------
-Example see https://github.com/zhaoqige/stc-controller.git
+Example see https://github.com/zhaoqige/stc-mcu.git
 
 DEPENDENCIES
 ------------
